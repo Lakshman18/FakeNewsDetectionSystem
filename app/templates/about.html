@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+    .about-hero {
+        background-color: #111;
+        color: #fff;
+        padding: 100px 0;
+        text-align: center;
+    }
+
+    .about-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .about-subtitle {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1.2rem;
+        color: #bbb;
+    }
+
+    .section-dark {
+        background-color: #1c1c1e;
+        color: #fff;
+        padding: 60px 0;
+    }
+
+    .section-dark h3 {
+        font-weight: 600;
+    }
+
+    .section-dark p {
+        color: #aaa;
+    }
+
+    .feature-icon {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        color: #f39c12;
+    }
+</style>
+
+<!-- Hero Section -->
+<section class="about-hero">
+    <div class="container">
+        <h1 class="about-title">About Truth Lens</h1>
+        <p class="about-subtitle">AI-Powered Fake News Detection System</p>
+    </div>
+</section>
+
+<!-- Project Overview -->
+<section class="section-dark">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-10 mx-auto text-center">
+                <h3>Our Mission</h3>
+                <p>
+                    Truth Lens is a machine learning-based web application that helps identify fake news using advanced Natural Language Processing (NLP) techniques.
+                    Built with BERT, Django, and Bootstrap, our goal is to empower users to verify the authenticity of articles and URLs in real time.
+                </p>
+            </div>
+        </div>
+
+        <!-- Feature Highlights -->
+        <div class="row text-center">
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                <h5>High Accuracy</h5>
+                <p>Utilizes BERT with over 90% fake news classification accuracy.</p>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="feature-icon"><i class="bi bi-lightning-charge"></i></div>
+                <h5>Real-Time</h5>
+                <p>Provides instant analysis of both URLs and article text.</p>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="feature-icon"><i class="bi bi-patch-check"></i></div>
+                <h5>Source Validation</h5>
+                <p>Compares information against verified databases and sources.</p>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="feature-icon"><i class="bi bi-eye"></i></div>
+                <h5>Explainable AI</h5>
+                <p>Shows how decisions are made through interpretable results.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tech Stack & Contact -->
+<section class="section-dark">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4">
+                <h3>Technology Stack</h3>
+                <ul class="text-light">
+                    <li>Python, Django, Bootstrap 5</li>
+                    <li>Transformers: BERT model</li>
+                    <li>BeautifulSoup, lxml for scraping</li>
+                    <li>JavaScript for interactivity</li>
+                </ul>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h3>About the Developer</h3>
+                <p class="text-light">
+                    Developed by Lakshman Sivarathan, MSc Software Engineering student at the University of Hertfordshire. Passionate about solving real-world problems with AI.
+                </p>
+                <p><i class="bi bi-envelope"></i> lakshman@gmail.com</p>
+                <p><i class="bi bi-github"></i> <a href="https://github.com/laskhman" target="_blank" class="text-warning">github.com/yourgithub</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

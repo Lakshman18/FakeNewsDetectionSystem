@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    body {
+        background-color: #121212;
+        color: #f5f5f5;
+    }
+
+    .result-section {
+        background-color: #1e1e1e;
+        padding: 60px 40px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .result-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+    }
+
+    .result-badge {
+        font-size: 1.1rem;
+        padding: 10px 20px;
+        border-radius: 30px;
+    }
+
+    .result-text-box {
+        background-color: #2c2c2c;
+        padding: 25px;
+        border-radius: 10px;
+        border: 1px solid #333;
+        font-size: 1rem;
+        line-height: 1.6;
+        white-space: pre-line;
+    }
+
+    .lime text {
+        fill: white !important;
+    }
+
+    .explanation-box {
+    background-color: #202020 !important;
+    color: #eee !important;
+    }
+
+    .explanation-box {
+    background-color: #2c2c2c !important;
+    color: white !important;
+    border-left: 4px solid #f39c12;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    padding: 20px;
+    }
+
+    .explanation-box span, 
+    .explanation-box p, 
+    .explanation-box div, 
+    .explanation-box a,
+    .explanation-box li {
+        color: white !important;
+    }
+
+    .explanation-box a {
+        color: #f39c12 !important;
+    }
+    .btn-secondary {
+        background-color: #333;
+        border: none;
+        padding: 10px 20px;
+        font-weight: 500;
+        border-radius: 30px;
+    }
+
+    .btn-secondary:hover {
+        background-color: #444;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="result-section text-center">
+
+                <h2 class="result-title">Analysis Result</h2>
+
+                {% if prediction == 'Fake' %}
+                    <span class="badge bg-danger result-badge">⚠️ FAKE NEWS DETECTED</span>
+                {% elif prediction == 'Real' %}
+                    <span class="badge bg-success result-badge">✅ REAL NEWS</span>
+                {% else %}
+                    <span class="badge bg-secondary result-badge">ℹ️ COULD NOT CLASSIFY</span>
+                {% endif %}
+
+                <div class="mt-5 text-start">
+                    <h5>Submitted Content:</h5>
+                    <div class="result-text-box mt-3">
+                        {{ text|default:"No text provided." }}
+                    </div>
+
+                    <!-- <div class="explanation-box mt-4">
+                        <strong>Model Explanation:</strong>
+                        <p class="mt-2">
+                            This prediction is based on a deep learning model (e.g., BERT) that analyzes linguistic patterns and compares the content against credible sources.
+                            It considers headline structure, sentiment shifts, and topic relevance to determine authenticity.
+                        </p>
+                    </div> -->
+                    <div class="explanation-box mt-4">
+                        <strong>Model Explanation:</strong>
+                        <div class="mt-3">
+                            {{ lime_html|safe }}
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="{% url 'submit_article' %}" class="btn btn-secondary">🔁 Analyze Another</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

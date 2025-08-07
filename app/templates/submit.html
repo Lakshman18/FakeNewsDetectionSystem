@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5 text-light">
+    <h2 class="mb-4">Submit News Article</h2>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-warning">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="news_url" class="form-label">Article URL</label>
+            <input type="url" class="form-control" id="news_url" name="news_url" placeholder="https://example.com/news" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="news_text" class="form-label">OR Paste Article Text</label>
+            <textarea class="form-control" id="news_text" name="news_text" rows="6" placeholder="Paste article content here..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-warning">Analyze</button>
+    </form>
+</div>
+{% endblock %}

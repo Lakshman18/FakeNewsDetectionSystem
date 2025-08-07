@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+  body {
+    background-color: #121212;
+    font-family: 'Roboto', sans-serif;
+    color: #e0e0e0;
+  }
+
+  .profile-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-top: 2rem;
+  }
+
+  .profile-header h2 {
+    font-weight: 500;
+    color: #f39c12;
+  }
+
+  .history-card {
+    background: #1e1e1e;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+  }
+
+  .result-badge {
+    font-weight: 500;
+    padding: 0.35em 0.75em;
+    border-radius: 6px;
+  }
+
+  .result-real {
+    background-color: #198754;
+    color: white;
+  }
+
+  .result-fake {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  .small-text {
+    font-size: 0.875rem;
+    color: #bbb;
+  }
+
+  .pagination-dark .page-link {
+    background-color: #1e1e1e;
+    color: #eee;
+  }
+</style>
+
+<div class="container mt-5">
+  <div class="profile-header">
+    <h2>My Profile</h2>
+    <p class="text-light">Welcome, {{ user.username }}. Below is your analysis history.</p>
+  </div>
+
+  {% if history %}
+    {% for entry in history %}
+      <div class="history-card" data-bs-toggle="modal" data-bs-target="#modal{{ entry.id }}">
+        <div class="row">
+          <div class="col-md-8">
+            <p class="mb-1"><strong>Source:</strong>
+              {% if entry.input_url %}
+                <span class="text-warning">{{ entry.input_url|truncatechars:60 }}</span>
+              {% elif entry.input_text %}
+                {{ entry.input_text|truncatechars:80 }}
+              {% endif %}
+            </p>
+            <p class="small-text">Analyzed on {{ entry.analyzed_at|date:"F j, Y, g:i a" }}</p>
+          </div>
+          <div class="col-md-4 text-md-end text-start mt-3 mt-md-0">
+            <span class="result-badge {% if entry.result == 'Fake' %}result-fake{% else %}result-real{% endif %}">
+              {{ entry.result }}
+            </span>
+            {% if entry.confidence %}
+              <p class="mt-1 small-text">Confidence: {{ entry.confidence|floatformat:2 }}%</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="modal{{ entry.id }}" tabindex="-1" aria-labelledby="modalLabel{{ entry.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-0">
+              <h5 class="modal-title" id="modalLabel{{ entry.id }}">Full Analysis Details</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              {% if entry.input_url %}
+              <p><strong>URL:</strong> <a href="{{ entry.input_url }}" class="text-warning" target="_blank">{{ entry.input_url }}</a></p>
+              {% endif %}
+              {% if entry.input_text %}
+              <p><strong>Text:</strong></p>
+                <div class="p-3 border rounded bg-dark text-white" style="white-space: pre-wrap;">
+                {{ entry.input_text }}
+                </div>
+              {% endif %}
+              <p class="mt-3"><strong>Analyzed At:</strong> {{ entry.analyzed_at }}</p>
+              <p><strong>Result:</strong> 
+                <span class="result-badge {% if entry.result == 'Fake' %}result-fake{% else %}result-real{% endif %}">
+                  {{ entry.result }}
+                </span>
+              </p>
+              {% if entry.confidence %}
+              <p><strong>Confidence:</strong> {{ entry.confidence|floatformat:2 }}%</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-center text-light mt-5">No analysis history yet. Try analyzing a news article or URL.</p>
+  {% endif %}
+
+  <!-- Pagination -->
+  <div class="d-flex justify-content-center mt-4">
+    <nav>
+      <ul class="pagination pagination-dark">
+        {% if history.has_previous %}
+          <li class="page-item">
+            <a class="page-link border-secondary" href="?page=1">&laquo; First</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link border-secondary" href="?page={{ history.previous_page_number }}">Previous</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link border-secondary">&laquo; First</span></li>
+          <li class="page-item disabled"><span class="page-link border-secondary">Previous</span></li>
+        {% endif %}
+
+        <li class="page-item disabled">
+          <span class="page-link border-secondary">Page {{ history.number }} of {{ history.paginator.num_pages }}</span>
+        </li>
+
+        {% if history.has_next %}
+          <li class="page-item">
+            <a class="page-link border-secondary" href="?page={{ history.next_page_number }}">Next</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link border-secondary" href="?page={{ history.paginator.num_pages }}">Last &raquo;</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link border-secondary">Next</span></li>
+          <li class="page-item disabled"><span class="page-link border-secondary">Last &raquo;</span></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+{% endblock %}

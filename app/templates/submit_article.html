@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    body {
+        background-color: #121212;
+        color: #f5f5f5;
+    }
+
+    .form-section {
+        padding: 60px 0;
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-control,
+    .form-select {
+        background-color: #2c2c2c;
+        border: 1px solid #444;
+        color: #fff;
+    }
+
+    .form-control:focus {
+        border-color: #f39c12;
+        box-shadow: none;
+    }
+
+    label {
+        font-weight: 500;
+        color: #ddd;
+    }
+
+    .btn-warning {
+        background-color: #f39c12;
+        border: none;
+        font-weight: 500;
+        border-radius: 30px;
+    }
+
+    .btn-warning:hover {
+        background-color: #e67e22;
+    }
+
+    h2 {
+        font-family: 'Playfair Display', serif;
+    }
+
+    .alert {
+        background-color: #333;
+        color: #f39c12;
+        border: 1px solid #f39c12;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="form-section p-5">
+                <h2 class="mb-4 text-center">Submit News Article or URL</h2>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-warning">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                <div id="form-warning" class="alert alert-danger d-none" role="alert"></div>
+
+
+                <form method="POST" action="{% url 'analyze_article' %}" onsubmit="return validateForm();">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <label for="news_url" class="form-label">News URL (optional)</label>
+                        <input type="url" name="news_url" id="news_url" class="form-control" placeholder="https://example.com/news">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="news_text" class="form-label">Article Text</label>
+                        <textarea name="news_text" id="news_text" rows="6" class="form-control" placeholder="Paste your article here..."></textarea>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-warning px-5 py-2" id="analyzeBtn">Analyze</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Validation Script -->
+<script>
+function validateForm() {
+    const url = document.getElementById("news_url").value.trim();
+    const text = document.getElementById("news_text").value.trim();
+    const warningDiv = document.getElementById("form-warning");
+
+    // Hide Django messages manually (if you gave it a class or ID)
+    const djangoMessages = document.querySelectorAll('.alert-warning');
+    djangoMessages.forEach(msg => msg.classList.add('d-none'));
+
+    if (!url && !text) {
+        warningDiv.textContent = "Please enter either a News URL or Article Text before submitting.";
+        warningDiv.classList.remove("d-none");
+        return false;
+    }
+
+    if (!url && text.split(/\s+/).filter(word => word.length > 0).length < 50) {
+        warningDiv.textContent = "Article Text must contain at least 50 words.";
+        warningDiv.classList.remove("d-none");
+
+        // const spinner = document.getElementById("loadingSpinner");
+        // if (spinner) {
+        //     print("yes")
+        //     spinner.style.display = "none";
+        // }
+        return false;
+    }
+    
+
+    warningDiv.classList.add("d-none");
+    document.getElementById("analyzeBtn").disabled = true;
+    document.getElementById("analyzeBtn").innerText = "Analyzing...";
+    return true;
+}
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const urlInput = document.getElementById("news_url");
+    const textInput = document.getElementById("news_text");
+    const submitBtn = document.getElementById("analyzeBtn");
+
+    function toggleSubmitButton() {
+        const url = urlInput.value.trim();
+        const text = textInput.value.trim();
+        submitBtn.disabled = (!url && !text);
+    }
+
+    // Initial check on page load
+    toggleSubmitButton();
+
+    // Attach input event listeners
+    urlInput.addEventListener("input", toggleSubmitButton);
+    textInput.addEventListener("input", toggleSubmitButton);
+});
+</script>
+
+
+{% endblock %}

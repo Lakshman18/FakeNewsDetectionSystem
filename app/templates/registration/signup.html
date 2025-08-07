@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+  body, html {
+    height: 100%;
+    background: #212529;
+    font-family: 'Roboto', sans-serif;
+    color: #eee;
+  }
+
+  .login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .login-card {
+    background: #1e1e1e;
+    padding: 2.5rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .login-card h2 {
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    color: #f39c12;
+    text-align: center;
+  }
+
+  .form-control {
+    background: #2a2a2a;
+    border: none;
+    color: #eee;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+
+  .form-control:focus {
+    background: #3a3a3a;
+    outline: none;
+    box-shadow: 0 0 0 2px #f39c12;
+    color: #fff;
+  }
+
+  .btn-login {
+    background-color: #f39c12;
+    border: none;
+    width: 100%;
+    padding: 0.75rem;
+    font-weight: 500;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    color: #121212;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-login:hover {
+    background-color: #e67e22;
+  }
+
+  .form-text {
+    color: #aaa;
+    text-align: center;
+    margin-top: 1rem;
+  }
+
+  a.register-link {
+    color: #f39c12;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  a.register-link:hover {
+    text-decoration: underline;
+  }
+
+  .alert {
+    margin-bottom: 1rem;
+  }
+</style>
+
+<div class="login-container">
+  <div class="login-card">
+    <h2>Create an Account</h2>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-warning" role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %} 
+
+    <form method="POST">
+  {% csrf_token %}
+
+  <div class="mb-3">
+    <label for="id_username" class="form-label">Username</label>
+    <input type="text" name="username" class="form-control" id="id_username" placeholder="Enter your username" required>
+    {% if form.username.errors %}
+      <div class="text-danger">{{ form.username.errors }}</div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <label for="id_password1" class="form-label">Password</label>
+    <input type="password" name="password1" class="form-control" id="id_password1" placeholder="Enter your password" required>
+    {% if form.password1.errors %}
+      <div class="text-danger">{{ form.password1.errors }}</div>
+    {% endif %}
+  </div>
+
+  <div class="mb-3">
+    <label for="id_password2" class="form-label">Confirm Password</label>
+    <input type="password" name="password2" class="form-control" id="id_password2" placeholder="Confirm password" required>
+    {% if form.password2.errors %}
+      <div class="text-danger">{{ form.password2.errors }}</div>
+    {% endif %}
+  </div>
+
+  <button type="submit" class="btn btn-login">Register</button>
+</form>
+
+
+    <p class="form-text">Already have an account? <a href="{% url 'login' %}" class="register-link">Login here</a></p>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Truth Lens</title>
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Optional Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+.custom-spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(18, 18, 18, 0.6);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid transparent;
+  border-top: 6px solid #f39c12;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 10px #f39c12, 0 0 20px #f39c12 inset;
+}
+
+@keyframes spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-black">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'home' %}" style="font-family: 'Montserrat', sans-serif; font-weight: 700;">
+      Truth Lens
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/about/' %}active{% endif %}" href="{% url 'about' %}">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/submit/' %}active{% endif %}" href="{% url 'submit_article' %}">Analyze</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == '/accounts/profile/' %}active{% endif %}" href="{% url 'profile' %}">My Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == '/accounts/login/' %}active{% endif %}" href="{% url 'login' %}">Login</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Page Content -->
+{% block content %}
+{% endblock content %}
+
+<!-- Footer -->
+<footer class="bg-black text-white py-4 mt-0">
+  <div class="container text-center">
+    <p class="mb-0">&copy; 2025 Truth Lens. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- Global Spinner -->
+<div class="custom-spinner-overlay" id="loadingSpinner">
+  <div class="custom-spinner"></div>
+</div>
+
+<!-- Bootstrap JS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const spinner = document.getElementById("loadingSpinner");
+
+    function showSpinner() {
+      if (spinner) {
+        spinner.style.display = "flex";
+      }
+    }
+
+    // Show spinner on all <a> clicks (navbar, pagination, etc.)
+    document.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", function (e) {
+        const href = link.getAttribute("href");
+
+        // Ignore empty links or anchor-only links
+        if (href && !href.startsWith("#") && !link.hasAttribute("download") && link.target !== "_blank") {
+          showSpinner();
+        }
+      });
+    });
+
+    // Show spinner on form submissions
+    document.querySelectorAll("form").forEach(form => {
+      form.addEventListener("submit", function () {
+        showSpinner();
+      });
+    });
+  });
+</script>
+
+
+</body>
+</html>

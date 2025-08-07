@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Fonts and Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+/* Hero Section */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    background-image: url("{% static 'img/bg.jpeg' %}");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+}
+
+.hero-subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 6px rgba(0,0,0,0.6);
+}
+
+.hero-btn {
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f39c12;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.hero-btn:hover {
+    background-color: #e67e22;
+}
+</style>
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="hero-title">Truth Lens</div>
+        <div class="hero-subtitle">Expose the Lies. Reveal the Truth.</div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<section class="py-5 bg-dark text-light">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+          <i class="bi bi-shield-check fs-3"></i>
+        </div>
+        <h5 class="fw-bold">High Accuracy</h5>
+        <p class="text-light-50">Powered by BERT and NLP models, ensuring over 90% classification accuracy.</p>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+          <i class="bi bi-patch-check fs-3"></i>
+        </div>
+        <h5 class="fw-bold">Reliable Sources</h5>
+        <p class="text-light-50">Validates news against credible sources and fact-checking databases.</p>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+          <i class="bi bi-graph-up-arrow fs-3"></i>
+        </div>
+        <h5 class="fw-bold">Real-Time Detection</h5>
+        <p class="text-light-50">Detects fake news instantly using advanced natural language understanding.</p>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+          <i class="bi bi-bar-chart-line fs-3"></i>
+        </div>
+        <h5 class="fw-bold">Explainable Results</h5>
+        <p class="text-light-50">Provides clear breakdowns of how and why content is marked fake or real.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-5 bg-black text-light">
+  <div class="container">
+    <h3 class="text-center mb-4 fw-bold">How It Works</h3>
+    <div class="row text-center">
+      <div class="col-md-4">
+        <i class="bi bi-file-earmark-text fs-1 text-primary mb-2"></i>
+        <h5>Input Article</h5>
+        <p class="text-light-50">Submit any news text or URL for analysis.</p>
+      </div>
+      <div class="col-md-4">
+        <i class="bi bi-cpu fs-1 text-success mb-2"></i>
+        <h5>AI Analysis</h5>
+        <p class="text-light-50">Our ML models detect fake news patterns instantly.</p>
+      </div>
+      <div class="col-md-4">
+        <i class="bi bi-check-circle fs-1 text-danger mb-2"></i>
+        <h5>Get Verdict</h5>
+        <p class="text-light-50">See whether the article is trustworthy or not.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 text-center bg-dark text-light">
+  <div class="container">
+    <h2 class="fw-bold mb-3">Ready to verify news?</h2>
+    <p class="text-light-50 mb-4">Enter a news article or link and let Truth Lens analyze its credibility.</p>
+    <a href="{% url 'submit_article' %}" class="btn btn-warning px-4 py-2">Check News</a>
+  </div>
+</section>
+
+{% endblock content %}
